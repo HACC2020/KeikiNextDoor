@@ -39,7 +39,8 @@ namespace OhanaSupport {
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //No need https, this will be handled by the reverse proxy
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
