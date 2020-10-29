@@ -4,7 +4,7 @@ Welcome!
 
 ## Get set up to use our repository
 
-1. Create a file called .gitconfig
+1. Create a file called .gitconfig in this directory
 
 2. Put the following contents into it
 
