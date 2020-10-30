@@ -21713,6 +21713,14 @@ video {
   color: rgba(45, 55, 72, var(--text-opacity));
 }
 
+.valid.modified:not([type=checkbox]) {
+  border-width: 1px;
+  border-style: solid;
+  --border-opacity: 1;
+  border-color: #68d391;
+  border-color: rgba(104, 211, 145, var(--border-opacity));
+}
+
 .invalid {
   --bg-opacity: 1;
   background-color: #feb2b2;
