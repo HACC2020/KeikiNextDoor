@@ -1,0 +1,45 @@
+@tailwind base;
+
+
+
+@tailwind components;
+
+
+
+/* CUSTOM TAILWIND UTILITIES */
+
+/* none created yet */
+
+/* END CUSTOM TAILWIND UTILITIES END */
+
+
+
+@tailwind utilities;
+
+
+
+/* BLAZOR REQUIRED CLASSES */
+#blazor-error-ui {
+    @apply bg-yellow-300 bottom-0 shadow hidden left-0 fixed px-5 py-3 w-full z-50;
+}
+
+#blazor-error-ui .dismiss {
+    @apply cursor-pointer absolute right-0 mr-3 top-0 mt-1;
+}
+/* END BLAZOR REQUIRED CLASSES *
+
+
+
+/* BLAZOR DEFAULT APPLIED CLASSES */
+.validation-message {
+    @apply my-1 px-2 py-1 bg-orange-300 border-orange-600 text-orange-800 rounded text-sm font-normal tracking-tight leading-none;
+}
+
+.valid {
+    @apply bg-gray-300 border-gray-600 text-gray-800;
+}
+
+.invalid {
+    @apply bg-red-300 border-red-600 text-red-800;
+}
+/* END BLAZOR DEFAULT APPLIED CLASSES */
