@@ -25,7 +25,7 @@ Install these programs
         template = ~/.gitmessage
     [core]
         autocrlf = input
-        whitespace = trailing-space,space-before-tab,indent-with-non-tab,tab-in-indent,cr-at-eol
+        whitespace = trailing-space,space-before-tab,indent-with-non-tab
     ```
 5. Run this command from a terminal inside the OhanaSupport folder
     ```bash
