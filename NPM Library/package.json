@@ -29,6 +29,7 @@
     "autoprefixer": "^9.7.4"
   },
   "dependencies": {
+    "browserify": "^17.0.0",
     "gulp-rename": "^2.0.0"
   }
 }
