@@ -1,0 +1,65 @@
+@page "/CovidPage"
+
+@inject NavigationManager NavigationManager
+
+<div>
+    
+    <div class="text-center bg-gray-400 font-bold py-2">
+        <p class="text-5xl">Ohana Support</p>
+        <p class="text-1xl">Hawai‘i State Resource Directory</p>
+    </div>
+    <p class="text-center text-2xl">Resources for our residents of Hawai‘i</p>
+
+    <p class="text-center text-1x1">Let us help you get connected to the right Covid-19 resources</p>
+
+    <div class="flex justify-center mt-4">
+        What Island are you from?
+    </div>
+    
+    <div class="flex justify-center">
+        <div @onclick="@Clicked">        
+            <div class="@Visible">
+                <select>
+                    <option @onclick="@(() => Select(1))">O‘ahu</option>
+                    <option @onclick="@(() => Select(1))">Hawai‘i (Big Island)</option>
+                    <option @onclick="@(() => Select(1))">Maui</option>
+                    <option @onclick="@(() => Select(1))">Kaua‘i</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-center mt-4">
+        What Covid-19 information are you looking for?
+    </div>
+    
+    <div class="flex justify-center">
+        <div @onclick="@Clicked">        
+            <div class="@Visible">
+                <select>
+                    <option @onclick="@(() => Select(1))">Covid-19 Information Resources</option>
+                    <option @onclick="@(() => Select(1))">Temporary Public Assistance</option>
+                    <option @onclick="@(() => Select(1))">Family and Provider Resources</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+</div> 
+
+@code {
+    private string Visible = null;
+
+    private void Clicked() {
+        if (Visible == null) Visible = "";
+        else Visible = null;
+    }
+
+    private void Navigate(int x) {
+        NavigationManager.NavigateTo($"/{x}");
+    }
+
+    private void Select(int x) {
+        NavigationManager.NavigateTo($"/{x}");
+    }
+}
