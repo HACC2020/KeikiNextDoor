@@ -1,0 +1,13 @@
+version: "3.6"
+services:
+    database:
+        build:
+            context: ./Docker
+            dockerfile: Dockerfile
+        ports:
+            - "1433:1433"
+        volumes:
+            - db-data:/var/lib/sql/data
+
+volumes:
+    db-data:
