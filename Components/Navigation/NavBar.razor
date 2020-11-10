@@ -1,4 +1,27 @@
-<div class="text-center bg-gray-400 font-bold py-2">
-    <p class="text-5xl">Ohana Support</p>
-    <p class="text-1xl">Hawai‘i State Resource Directory</p>
+<div class="flex flex-row justify-between items-center px-2 py-1 bg-green-800">
+    <p class="text-3xl md:text-4xl font-bold tracking-wide leading-loose text-white">Ohana Support</p>
+
+    <button type="button" @onclick="@Toggle" class="p-1 bg-blue-400 rounded-md">
+        Toggle
+    </button>
 </div>
+
+<div class="flex flex-col text-gray-200 @ShowMenu">
+    <NavLink href="/links/create">
+        Create Link
+    </NavLink>
+
+    <NavLink href="/tags/create">
+        Create Tag
+    </NavLink>
+</div>
+
+@code {
+    private bool Open = false;
+
+    private string ShowMenu => Open ? null : "hidden";
+
+    private void Toggle() {
+        Open = !Open;
+    }
+}
