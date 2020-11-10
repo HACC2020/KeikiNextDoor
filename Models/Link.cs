@@ -16,21 +16,24 @@ namespace OhanaSupport.Models {
         public Guid Id { get; set; }
 
         [Required]
+        public string Url { get; set; }
+
+        [Required]
         public string Name { get; set; }
         
         [Required]
         public string Description { get; set; }
         
-        public string Origin { get; set; }
+        public string Origin { get; set; } = null;
 
-        public DateTime? Published { get; set; }
+        public DateTime? Published { get; set; } = null;
         
         [Required]
-        public LinkType Type { get; set; }
+        public LinkType Type { get; set; } = LinkType.None;
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = null;
 
         //Navigational Properties
         public List<LinkTag> LinkTags { get; set; }
