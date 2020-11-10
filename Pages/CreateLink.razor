@@ -1,0 +1,75 @@
+@page "/links/create"
+
+@inject NavigationManager NavigationManager
+@inject ILinkRepository LinkRepository
+
+<EditForm Model="@Link" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="flex flex-col mx-2 my-1">
+        <div class="flex flex-col"
+            <label class="text-gray-700 text-sm">Url *</label>
+
+            <InputText @bind-Value="@Link.Url" id="Url" placeholder="Place the link here" class="p-2 text-md border-gray-700 border border-solid rounded-md" />
+            <ValidationMessage For="@(() => Link.Url)" />
+        </div>
+
+        <div class="flex flex-col"
+            <label class="text-gray-700 text-sm">Name *</label>
+
+            <InputText @bind-Value="@Link.Name" id="Name" placeholder="Ohana Support Main Page" class="p-2 text-md border-gray-700 border border-solid rounded-md" />
+            <ValidationMessage For="@(() => Link.Name)" />
+        </div>
+
+        <div class="flex flex-col mt-2"
+            <label class="text-gray-700 text-sm">Description *</label>
+
+            <InputText @bind-Value="@Link.Description" id="Description" placeholder="Ohana Support is a website that helps our Ohana find resources to take care of each other" class="p-2 text-md border-gray-700 border border-solid rounded-md" />
+            <ValidationMessage For="@(() => Link.Description)" />
+        </div>
+
+        <div class="flex flex-col mt-2"
+            <label class="text-gray-700 text-sm">Link Origin</label>
+
+            <InputText @bind-Value="@Link.Origin" id="Origin" placeholder="Ohana Support" class="p-2 text-md border-gray-700 border border-solid rounded-md" />
+            <ValidationMessage For="@(() => Link.Origin)" />
+        </div>
+
+        <div class="flex flex-col mt-2"
+            <label class="text-gray-700 text-sm">Publish Date</label>
+
+            <InputDate @bind-Value="@Link.Published" id="Published" class="p-2 text-md border-gray-700 border border-solid rounded-md" />
+            <ValidationMessage For="@(() => Link.Published)" />
+        </div>
+
+        <div class="flex flex-col mt-2"
+            <label class="text-gray-700 text-sm">Link Type</label>
+
+            <InputSelect @bind-Value="@Link.Type" id="Type" class="mt-1 p-2 text-md border-gray-700 border border-solid rounded-md">
+                @foreach (var type in Enum.GetValues<LinkType>()) {
+                    <option value="@type" selected="@(type == LinkType.None)">@type.ToString()</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => Link.Type)" />
+        </div>
+
+        <div class="flex flex-row justify-end mt-2">
+            <NavLink href="/" class="px-2 py-1 bg-gray-400 rounded-md">
+                Cancel
+            </NavLink>
+
+            <button type="submit" class="ml-2 px-2 py-1 bg-blue-400 rounded-md">
+                Submit
+            </button>    
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private Link Link = new Link();
+
+    private async Task HandleValidSubmit() {
+        await LinkRepository.Create(Link);
+        NavigationManager.NavigateTo($"/");
+    }
+}
