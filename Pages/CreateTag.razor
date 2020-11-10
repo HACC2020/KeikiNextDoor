@@ -1,0 +1,26 @@
+@page "/tags/create"
+
+@inject NavigationManager NavigationManager
+@inject ITagRepository TagRepository
+
+<EditForm Model="Tag" OnInvalidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    
+    <div class="flex flex-col mx-2 my-1">
+        <div class="flex flex-col"
+            <label class="text-gray-700 text-sm">Text *</label>
+
+            <InputText @bind-Value="@Tag.Text" id="Text" placeholder="DLNR" class="p-2 text-md border-gray-700 border border-solid rounded-md" />
+            <ValidationMessage For="@(() => Tag.Text)" />
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private Tag Tag = new Tag();
+
+    private async Task HandleValidSubmit() {
+        await TagRepository.Create(Tag);
+        NavigationManager.NavigateTo($"/");
+    }
+}
