@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 using OhanaSupport.Repositories;
+using OhanaSupport.Helpers;
 
 namespace OhanaSupport {
     public class Startup {
@@ -28,10 +30,14 @@ namespace OhanaSupport {
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            services.AddHttpClient();
+
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ILinkRepository, LinkRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            
+            services.AddSingleton<IconHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
