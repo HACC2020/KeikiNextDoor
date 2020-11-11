@@ -1,27 +1,36 @@
-<div class="flex flex-row justify-between items-center px-2 py-1 bg-green-800">
-    <p class="text-3xl md:text-4xl font-bold tracking-wide leading-loose text-white">Ohana Support</p>
+@inject IconHelper Icon
 
-    <button type="button" @onclick="@Toggle" class="p-1 bg-blue-400 rounded-md">
-        Toggle
-    </button>
-</div>
+<div class="flex flex-col bg-green-800 lg:flex-row lg:justify-between lg:items-center">
+    <div class="mx-2 flex flex-row justify-between items-center">
+        <p class="text-3xl md:text-4xl font-bold tracking-wide leading-loose text-white">Ohana Support</p>
 
-<div class="flex flex-col text-gray-200 @ShowMenu">
-    <NavLink href="/links/create">
-        Create Link
-    </NavLink>
+        <button type="button" @onclick="@Toggle" class="mx-2 p-1 bg-green-300 rounded-md lg:hidden">
+            @MenuIcon
+        </button>
+    </div>
 
-    <NavLink href="/tags/create">
-        Create Tag
-    </NavLink>
+    <div class="flex flex-col bg-green-600 @ShowMenu lg:flex lg:flex-row lg:bg-transparent">
+        <NavLink href="/links/create" class="mx-1 px-2 py-1 text-lg text-gray-200 rounded-md hover:bg-green-400">
+            Create Link
+        </NavLink>
+
+        <NavLink href="/tags/create" class="mx-1 px-2 py-1 text-lg text-gray-200 rounded-md lg:ml-2 hover:bg-green-400">
+            Create Tag
+        </NavLink>
+    </div>
 </div>
 
 @code {
+    private MarkupString MenuIcon = new MarkupString();
     private bool Open = false;
 
     private string ShowMenu => Open ? null : "hidden";
 
     private void Toggle() {
         Open = !Open;
+    }
+
+    protected async override Task OnInitializedAsync(){
+       MenuIcon = await Icon.GetIconAsync("Menu", "w-6 h-6 fill-current text-green-800");
     }
 }
