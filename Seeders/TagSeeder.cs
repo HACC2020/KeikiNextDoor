@@ -137,10 +137,6 @@ namespace OhanaSupport.Seeders {
                     Text = "Camp"
                 },
                 new Tag {
-                    Id = Guid.Parse("639f0d3d-61b8-4d41-95e2-c948ce30171d"),
-                    Text = "Youth"
-                },
-                new Tag {
                     Id = Guid.Parse("3c85333d-03ce-4eea-b8f1-273a24cad04b"),
                     Text = "Care"
                 },
