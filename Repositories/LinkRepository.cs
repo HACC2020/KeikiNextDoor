@@ -26,6 +26,15 @@ namespace OhanaSupport.Repositories {
             return await links.FirstOrDefaultAsync();
         }
 
+        public async Task<List<Link>> Search(string name = null, string origin = null, LinkType? linkType = null) {
+            IQueryable<Link> query = this.Context.Links;
+            if (!String.IsNullOrWhiteSpace(name)) query = query.Where(link => link.Name.Contains(name));
+            if (!String.IsNullOrWhiteSpace(origin)) query = query.Where(link => link.Origin.Contains(origin));
+            if (linkType != null) query = query.Where(link => link.Type == (LinkType)linkType);
+
+            return await query.ToListAsync();
+        }
+
         public async Task Create(Link link) {
             //var lnks = from link in this.Context.Links where lnk.Name == link.Name && lnk.Origin == link.Origin select link;
             //if (lnks.Count != 0) return;
