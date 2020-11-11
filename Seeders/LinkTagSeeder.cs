@@ -730,10 +730,6 @@ namespace OhanaSupport.Seeders {
                 },
                 new LinkTag {
                     LinkId = Guid.Parse("8356106d-f708-48fb-9499-cf0dd3b677c5"),
-                    TagId = Guid.Parse("639f0d3d-61b8-4d41-95e2-c948ce30171d")//youth
-                },
-                new LinkTag {
-                    LinkId = Guid.Parse("8356106d-f708-48fb-9499-cf0dd3b677c5"),
                     TagId = Guid.Parse("a69946bc-acb4-4f7d-9eb0-7ed4f0ebac40")//cdc
                 },
                 new LinkTag {
