@@ -1,56 +1,62 @@
 @page "/"
 
-<div class="bg-cover bg-center">
+<div class="flex flex-col bg-cover bg-center">
+
     <div class="flex justify-center m-4">
-        <p class="text-center max-w-lg text-3xl font-medium my-4">Welcome to the Ohana Support! <br>To find services available to you that you may qualify for, select one of the four options below and answer additional questions to be navigated through dozens of websites for the ones that best suit your needs. 
+        <p class="text-center max-w-3xl text-3xl font-medium my-4">Welcome to the Ohana Support! <br>To find services available to you that you may qualify for, select one of the four options below and answer additional questions to be navigated through dozens of websites for the ones that best suit your needs. 
         </p>
     </div>
-    <div class="flex justify-center text-center text-3xl font-bold mt-4">
-        What do you need help with?
-    </div>
-    <div class="flex justify-center">
-        <div class="mt-2 py-4 w-64 bg-gray-400 rounded-lg shadow-xl">
-        <NavLink href="/CovidPage" class="block font-bold text-center px-4 py-4 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Covid-19</NavLink>
-        <NavLink href="" class="block font-bold text-center px-4 py-4 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Education</NavLink>
-        <NavLink href="" class="block font-bold text-center px-4 py-4 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Health</NavLink>
-        <NavLink href="" class="block font-bold text-center px-4 py-4 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Human Services</NavLink>
-        </div>
+
+    <div class="flex justify-center text-center text-6xl font-bold mt-4">
+        How can we help you?
     </div>
 
-    <div class="w-full text-center mt-10 ">
+    <div class="flex mt-5 justify-center">
+        <div class="flex flex-wrap text-center justify-center">
+            <div class="">
+                <div class="font-bold text-4xl">Covid-19
+                </div>
+                <div class="grid auto-rows-max justify-items-center ">
+                    <div class="max-w-md text-2xl font-medium lg:h-56">
+                        COVID-19 is a disease caused by SARS-CoV-2 that can trigger what doctors call a ‘respiratory tract infection’. For questions concerning COVID-19 and the associated resources that you or your Ohana might need during this pandemic.
+                    </div>
+                    <div class = "mt-2 py-2 w-3/4 bg-gray-400 rounded-lg shadow-xl mb-4"> 
+                        <NavLink href="/CovidPage" class="block font-bold text-center px-2 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Learn More</NavLink>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="font-bold text-4xl">Education
+                </div>
+                <div class="grid auto-rows-max justify-items-center ">
+                    <div class="grid place-content-center max-w-md text-2xl font-medium lg:h-56">Education involves all questions about learning, schooling, and Keiki education. For questions concerning Education and the associated resources that you or your Ohana need.
+                    </div>
 
-        <div class="font-bold text-5xl">Descriptions
-        </div>
-
-        <div class="mt-3">
-            <div class="font-bold text-4xl">Covid-19
-            </div>
-            <div class="flex justify-center">
-                <div class="max-w-md text-2xl font-medium ">COVID-19 is a disease caused by SARS-CoV-2 that can trigger what doctors call a ‘respiratory tract infection’. For questions concerning COVID-19 and the associated resources that you or your Ohana might need during this pandemic.
+                    <div class = "mt-2 py-2 w-3/4 bg-gray-400 rounded-lg shadow-xl mb-4"> 
+                        <NavLink href="/" class="block font-bold text-center px-2 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Learn More</NavLink>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="my-6">
-            <div class="font-bold text-4xl">Education
-            </div>
-            <div class="flex justify-center">
-                <div class="max-w-md text-2xl font-medium">Education involves all questions about learning, schooling, and Keiki education. For questions concerning Education and the associated resources that you or your Ohana need.
+            <div>
+                <div class="font-bold text-4xl">Health
+                </div>
+                <div class="grid auto-rows-max justify-items-center">
+                    <div class="grid place-content-center max-w-md text-2xl font-medium lg:h-56">Health involves all questions about general health, medical needs, and medical services. For questions concerning Health and the associated resources that you or your Ohana’s need.
+                    </div>
+                    <div class = "mt-2 py-2 w-3/4 bg-gray-400 rounded-lg shadow-xl mb-4"> 
+                        <NavLink href="/" class="block font-bold text-center px-2 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Learn More</NavLink>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="my-6">
-            <div class="font-bold text-4xl">Health
-            </div>
-            <div class="flex justify-center">
-                <div class="max-w-md text-2xl font-medium">Health involves all questions about general health, medical needs, and medical services. For questions concerning Health and the associated resources that you or your Ohana’s need.
+            <div>
+                <div class="font-bold text-4xl">Human Services
                 </div>
-            </div>
-        </div>
-        <div class="my-6">
-            <div class="font-bold text-4xl">Human Services
-            </div>
-            <div class="flex justify-center">
-                <div class="max-w-md text-2xl font-medium">Human Services are all questions about services such as counselors, psychologists, social workers, nurses, and therapists. For questions concerning Human Services and the associated resources that you or your Ohana need.
+                <div class="grid auto-rows-max justify-items-center">
+                    <div class="max-w-md text-2xl font-medium lg:h-56">Human Services are all questions about services such as counselors, psychologists, social workers, nurses, and therapists. For questions concerning Human Services and the associated resources that you or your Ohana need.
+                    </div>
+                    <div class = "mt-2 py-2 w-3/4 bg-gray-400 rounded-lg shadow-xl mb-4"> 
+                        <NavLink href="/" class="block font-bold text-center px-2 py-2 text-gray-800 hover:bg-indigo-500 hover:text-white text-2xl">Learn More</NavLink>
+                    </div>
                 </div>
             </div>
         </div>
