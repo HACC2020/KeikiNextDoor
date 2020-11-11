@@ -1,4 +1,4 @@
-@page "/links/advanced-search"
+@page "/links/advancedsearch"
 
 @inject NavigationManager NavigationManager
 @inject IconHelper Icon
@@ -23,13 +23,15 @@
     <div class="flex-grow flex flex-col mt-2">
         <p class="text-md">Link Type</p>
 
-        <div class="flex flex-row">
-            <select class="w-full px-4 py-2 border-solid border-green-400 rounded-md">
-                <option value="Null" selected="@(LinkType == null)" @onclick="@(() => LinkType = null)">No Link Type</option>
-                @foreach (var linkType in Enum.GetValues<LinkType>()) {
-                    <option value="@linkType" selected="@(LinkType == (LinkType)linkType)" @onclick="@(() => LinkType = linkType)">@linkType.ToString()</option>
-                }
-            </select>
+        <div class="flex flex-row mt-1">
+            <button type="button" @onclick="@(() => SelectLinkType(null))" class="px-2 py-1 bg-green-500 rounded-md text-gray-200 @((LinkType == null) ? LinkTypeSelectedCSS : null)">
+                No Link Type
+            </button>
+            @foreach (var linkType in Enum.GetValues<LinkType>()) {
+                <button type="button" @onclick="@(() => SelectLinkType(linkType))" class="ml-2 px-2 py-1 bg-green-500 rounded-md text-gray-200 @((LinkType == linkType) ? LinkTypeSelectedCSS : null)">
+                    @linkType.ToString()
+                </button>
+            }
         </div>
     </div>
 
@@ -51,31 +53,40 @@
     private MarkupString SearchIcon = new MarkupString();
     private MarkupString CancelIcon = new MarkupString();
 
+    private const string LinkTypeSelectedCSS = "bg-blue-400";
+
     private string Name = "";
     private string Origin = "";
     private LinkType? LinkType = null;
 
+    private void SelectLinkType(LinkType? linkType) {
+        LinkType = linkType;
+    }
+
     private void Search() {
+        var query = GetQueryString();
+        NavigationManager.NavigateTo($"/links/search{query}");
+        StateHasChanged();
+    }
+
+    private string GetQueryString() {
         List<string> parameters = new List<string>();
-        if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"Name={Name}");
-        if (!String.IsNullOrWhiteSpace(Origin)) parameters.Add($"Origin={Origin}");
-        if (LinkType != null) parameters.Add($"LinkType={LinkType.ToString()}");
+        if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"name={Name}");
+        if (!String.IsNullOrWhiteSpace(Origin)) parameters.Add($"origin={Origin}");
+        if (LinkType != null) parameters.Add($"linktype={LinkType.ToString()}");
         string query = String.Join('&', parameters.ToArray());
         if (!String.IsNullOrWhiteSpace(query)) query = "?" + query;
-        NavigationManager.NavigateTo($"/links/search{query}");
+        return query;
     }
 
     protected async override Task OnInitializedAsync() {
         SearchIcon = await Icon.GetIconAsync("Search", "w-6 h-6 fill-current text-green-100");
         CancelIcon = await Icon.GetIconAsync("X", "w-6 h-6 fill-current text-green-800");
+
         var query = new Uri(NavigationManager.Uri).Query;
 
-        if (QueryHelpers.ParseQuery(query).TryGetValue("Name", out var name)) Name = name;
-        if (QueryHelpers.ParseQuery(query).TryGetValue("Origin", out var origin)) Origin = origin;
-        if (QueryHelpers.ParseQuery(query).TryGetValue("LinkType", out var linkType)) {
-            bool success = Enum.TryParse<LinkType>(linkType, out var type);
-            if (success) LinkType = type;
-            else LinkType = null;
-        }
+        if (QueryHelpers.ParseQuery(query).TryGetValue("name", out var name)) Name = name;
+        if (QueryHelpers.ParseQuery(query).TryGetValue("origin", out var origin)) Origin = origin;
+        if (QueryHelpers.ParseQuery(query).TryGetValue("linktype", out var linkType)) Enum.TryParse<LinkType>(linkType, out var LinkType);
     }
 }

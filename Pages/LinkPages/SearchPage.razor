@@ -28,7 +28,7 @@
 @if (Links != null) {
     @foreach (Link link in Links) {
         <div class="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
-            <NavLink href=@($"/links/{link.Id}/view") class="flex justify-between px-2 py-1 bg-green-500 rounded-md">
+            <NavLink href=@($"/links/{link.Id}/view") class="flex justify-between m-1 px-2 py-1 bg-green-500 rounded-md">
                 @link.Name
             </NavLink>
         </div>
@@ -40,16 +40,15 @@
     private string ResultsText => (Links == null || Links.Count == 0) ? (IsSearchPage() ? $"Search Results for: {GetQueryInfo()}" : null) : (IsSearchPage() ? $"No Search Results for: {GetQueryInfo()}" : $"No Results");
     private MarkupString SearchIcon = new MarkupString();
 
-    private string Name = "";
-    private string Origin = "";
-    private LinkType? LinkType = null;
+    private string Name;
+    private string Origin;
+    private LinkType? LinkType;
 
     private List<Link> Links = null;
 
     private async Task Search() {
         var query = GetQueryString();
         NavigationManager.NavigateTo($"/links/search{query}");
-        SetQueryParameters();
         await SearchLinks();
         StateHasChanged();
     }
@@ -64,12 +63,11 @@
 
     private void AdvancedSearch() {
         var query = GetQueryString();
-        NavigationManager.NavigateTo($"/links/advanced-search{query}");
+        NavigationManager.NavigateTo($"/links/advancedsearch{query}");
     }
 
     private async Task SearchLinks() {
         Links = await LinkRepository.Search(Name, Origin, LinkType);
-        StateHasChanged();
     }
 
     private string GetQueryInfo() {
@@ -83,9 +81,9 @@
 
     private string GetQueryString() {
         List<string> parameters = new List<string>();
-        if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"Name={Name}");
-        if (!String.IsNullOrWhiteSpace(Origin)) parameters.Add($"Origin={Origin}");
-        if (LinkType != null) parameters.Add($"LinkType={LinkType.ToString()}");
+        if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"name={Name}");
+        if (!String.IsNullOrWhiteSpace(Origin)) parameters.Add($"origin={Origin}");
+        if (LinkType != null) parameters.Add($"linktype={LinkType.ToString()}");
         string query = String.Join('&', parameters.ToArray());
         if (!String.IsNullOrWhiteSpace(query)) query = "?" + query;
         return query;
@@ -94,17 +92,19 @@
     private void SetQueryParameters() {
         var query = new Uri(NavigationManager.Uri).Query;
 
-        if (QueryHelpers.ParseQuery(query).TryGetValue("Name", out var name)) Name = name;
-        if (QueryHelpers.ParseQuery(query).TryGetValue("Origin", out var origin)) Origin = origin;
-        if (QueryHelpers.ParseQuery(query).TryGetValue("LinkType", out var linkType)) {
-            bool success = Enum.TryParse<LinkType>(linkType, out var type);
-            if (success) LinkType = type;
-            else LinkType = null;
-        }
+        if (QueryHelpers.ParseQuery(query).TryGetValue("name", out var name)) Name = name;
+        if (QueryHelpers.ParseQuery(query).TryGetValue("origin", out var origin)) Origin = origin;
+        if (QueryHelpers.ParseQuery(query).TryGetValue("linktype", out var linkType)) Enum.TryParse<LinkType>(linkType, out var LinkType);
+
+        StateHasChanged();
     }
 
     protected async override Task OnInitializedAsync() {
         SearchIcon = await Icon.GetIconAsync("Search", "w-6 h-6 fill-current text-green-800");
+
+        Name = null;
+        Origin = null;
+        LinkType = null;
 
         if (IsSearchPage()) {
             SetQueryParameters();
