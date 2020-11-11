@@ -5,31 +5,25 @@
 @inject IconHelper Icon
 @inject ILinkRepository LinkRepository
 
-<div class="flex flex-row justify-between">
-    <h1 class="text-4xl font-bold tracking-wide text-black">@PageName</h1>
+<div class="flex flex-row justify-between mx-2">
+    <h1 class="text-4xl font-bold tracking-wide text-green-900">@PageName</h1>
 
     <div class="flex flex-row items-center">
-        <div class="flex items-center p-2 border border-solid border-green-800 rounded-md">
-            <input class="p-2 text-md font-normal tracking-normal leading-none text-green-900" @bind="@Name" @onkeyup="@InputSearch" placeholder="Daycare" />
+        <div class="flex items-center px-2 py-1 bg-white border border-solid border-green-800 rounded-md">
+            <input class="text-md font-normal tracking-normal leading-none text-green-900" @bind="@Name" @onkeyup="@InputSearch" placeholder="Daycare" />
             <button type="button" @onclick="@Search">
                 @SearchIcon
             </button>
         </div>
-        <button type="button" class="mx-2 px-2 py-1 bg-green-700 rounded-md" @onclick="@AdvancedSearch">
+        <button type="button" class="mx-2 px-2 py-1 bg-green-700 text-green-100 rounded-md" @onclick="@AdvancedSearch">
             Advanced Search
         </button>
     </div>
 </div>
 
-<hr class="mt-1 mb-2 border-green-900">
+<hr class="mx-2 mt-1 mb-2 border-green-900">
 
-@if (Links == null || Links?.Count == 0) {
-    <p class="mb-2 text-center text-md"> No results found for @GetQueryInfo()</p>
-} else {
-    @if (IsSearchPage()) {
-        <p class="mb-2 text-center text-md">Search Results for @GetQueryInfo()</p>
-    }
-}
+<p class="mb-2 text-center text-md">@ResultsText</p>
 
 @if (Links != null) {
     @foreach (Link link in Links) {
@@ -43,6 +37,7 @@
 
 @code {
     private string PageName => IsSearchPage() ? "Search Links" : "Links";
+    private string ResultsText => (Links == null || Links.Count == 0) ? (IsSearchPage() ? $"Search Results for: {GetQueryInfo()}" : null) : (IsSearchPage() ? $"No Search Results for: {GetQueryInfo()}" : $"No Results");
     private MarkupString SearchIcon = new MarkupString();
 
     private string Name = "";
@@ -109,7 +104,7 @@
     }
 
     protected async override Task OnInitializedAsync() {
-        SearchIcon = await Icon.GetIconAsync("Search");
+        SearchIcon = await Icon.GetIconAsync("Search", "w-6 h-6 fill-current text-green-800");
 
         if (IsSearchPage()) {
             SetQueryParameters();
