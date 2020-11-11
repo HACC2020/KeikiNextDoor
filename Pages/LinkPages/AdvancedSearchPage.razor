@@ -55,8 +55,6 @@
     private string Origin = "";
     private LinkType? LinkType = null;
 
-    private string Query = null;
-
     private void Search() {
         List<string> parameters = new List<string>();
         if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"Name={Name}");
