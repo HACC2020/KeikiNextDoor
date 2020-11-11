@@ -3,28 +3,28 @@
 @inject NavigationManager NavigationManager
 @inject IconHelper Icon
 
-<h1 class="text-4xl font-bold tracking-wide text-black">Links Advanced Search</h1>
+<h1 class="mx-2 text-4xl font-bold tracking-wide text-black">Links Advanced Search</h1>
 
-<hr class="mt-1 mb-2 border-green-900">
+<hr class="mx-2 mt-1 mb-2 border-green-900">
 
 <div class="flex flex-col mx-2">
     <div class="flex-grow flex flex-col">
-        <p class="text-sm">Name</p>
+        <p class="text-md">Name</p>
 
-        <input type="text" class="w-full p-2 border-solid border-green-400 rounded-md" @bind="@Name" />
+        <input type="text" class="w-full px-4 py-2 border-solid border-green-400 rounded-md" @bind="@Name" />
     </div>
 
-    <div class="flex-grow flex flex-col">
-        <p class="text-sm">Origin</p>
+    <div class="flex-grow flex flex-col mt-2">
+        <p class="text-md">Origin</p>
 
-        <input type="text" class="w-full p-2 border-solid border-green-400 rounded-md" @bind="@Origin" />
+        <input type="text" class="w-full px-4 py-2 border-solid border-green-400 rounded-md" @bind="@Origin" />
     </div>
 
-    <div class="flex-grow flex flex-col">
-        <p class="text-sm">Link Type</p>
+    <div class="flex-grow flex flex-col mt-2">
+        <p class="text-md">Link Type</p>
 
         <div class="flex flex-row">
-            <select class="px-2 py-1 border-solid border-green-400 rounded-md">
+            <select class="w-full px-4 py-2 border-solid border-green-400 rounded-md">
                 <option value="null" selected="@(LinkType == null)" @onclick="@(() => LinkType = null)">None</option>
                 @foreach (var linkType in Enum.GetValues<LinkType>()) {
                     <option value="@linkType" selected="@(LinkType == (LinkType)linkType)" @onclick="@(() => LinkType = linkType)">@linkType.ToString()</option>
@@ -33,13 +33,15 @@
         </div>
     </div>
 
-    <div class="flex flex-row items-center justify-end">
-        <button type="button" class="px-2 py-1 bg-gray-400 rounded-md" @onclick="@Search">
-            Cancel
+    <div class="flex flex-row items-center justify-end mt-2">
+        <button type="button" class="flex flex-row px-2 py-1 bg-gray-300 rounded-md" @onclick="@Search">
+            @CancelIcon
+            <p>Cancel</p>
         </button>
 
-        <button type="button" class="ml-2 px-2 py-1 bg-green-500 rounded-md" @onclick="@Search">
+        <button type="button" class="flex flex-row ml-2 px-2 py-1 bg-green-600 rounded-md" @onclick="@Search">
             @SearchIcon
+            <p>Search</p>
         </button>
     </div>
 </div>
@@ -47,6 +49,7 @@
 
 @code {
     private MarkupString SearchIcon = new MarkupString();
+    private MarkupString CancelIcon = new MarkupString();
 
     private string Name = "";
     private string Origin = "";
@@ -64,7 +67,9 @@
         NavigationManager.NavigateTo($"/links/search{query}");
     }
 
-    protected override void OnInitialized() {
+    protected async override Task OnInitializedAsync() {
+        SearchIcon = await Icon.GetIconAsync("Search", "w-6 h-6 fill-current text-green-100");
+        CancelIcon = await Icon.GetIconAsync("X", "w-6 h-6 fill-current text-green-800");
         var query = new Uri(NavigationManager.Uri).Query;
 
         if (QueryHelpers.ParseQuery(query).TryGetValue("Name", out var name)) Name = name;
