@@ -1,0 +1,122 @@
+@page "/links"
+@page "/links/search"
+
+@inject NavigationManager NavigationManager
+@inject IconHelper Icon
+@inject ILinkRepository LinkRepository
+
+<div class="flex flex-row justify-between">
+    <h1 class="text-4xl font-bold tracking-wide text-black">@PageName</h1>
+
+    <div class="flex flex-row items-center">
+        <div class="flex items-center p-2 border border-solid border-green-800 rounded-md">
+            <input class="p-2 text-md font-normal tracking-normal leading-none text-green-900" @bind="@Name" @onkeyup="@InputSearch" placeholder="Daycare" />
+            <button type="button" @onclick="@Search">
+                @SearchIcon
+            </button>
+        </div>
+        <button type="button" class="mx-2 px-2 py-1 bg-green-700 rounded-md" @onclick="@AdvancedSearch">
+            Advanced Search
+        </button>
+    </div>
+</div>
+
+<hr class="mt-1 mb-2 border-green-900">
+
+@if (Links == null || Links?.Count == 0) {
+    <p class="mb-2 text-center text-md"> No results found for @GetQueryInfo()</p>
+} else {
+    @if (IsSearchPage()) {
+        <p class="mb-2 text-center text-md">Search Results for @GetQueryInfo()</p>
+    }
+}
+
+@if (Links != null) {
+    @foreach (Link link in Links) {
+        <div class="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
+            <NavLink href=@($"/links/{link.Id}/view") class="flex justify-between px-2 py-1 bg-green-500 rounded-md">
+                @link.Name
+            </NavLink>
+        </div>
+    }
+}
+
+@code {
+    private string PageName => IsSearchPage() ? "Search Links" : "Links";
+    private MarkupString SearchIcon = new MarkupString();
+
+    private string Name = "";
+    private string Origin = "";
+    private LinkType? LinkType = null;
+
+    private List<Link> Links = null;
+
+    private async Task Search() {
+        var query = GetQueryString();
+        NavigationManager.NavigateTo($"/links/search{query}");
+        SetQueryParameters();
+        await SearchLinks();
+        StateHasChanged();
+    }
+
+    private async Task InputSearch(KeyboardEventArgs eventArgs) {
+        if (eventArgs.Key == "Enter") await Search();
+    }
+
+    private bool IsSearchPage() {
+        return Regex.IsMatch(NavigationManager.Uri, @"^.*?\/requests\/search.*$");
+    }
+
+    private void AdvancedSearch() {
+        var query = GetQueryString();
+        NavigationManager.NavigateTo($"/links/advanced-search{query}");
+    }
+
+    private async Task SearchLinks() {
+        Links = await LinkRepository.Search(Name, Origin, LinkType);
+        StateHasChanged();
+    }
+
+    private string GetQueryInfo() {
+        List<string> parameters = new List<string>();
+        if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"Name = {Name}");
+        if (!String.IsNullOrWhiteSpace(Origin)) parameters.Add($"Origin = {Origin}");
+        if (LinkType != null) parameters.Add($"LinkType = {LinkType.ToString()}");
+        string query = String.Join(", ", parameters.ToArray());
+        return query;
+    }
+
+    private string GetQueryString() {
+        List<string> parameters = new List<string>();
+        if (!String.IsNullOrWhiteSpace(Name)) parameters.Add($"Name={Name}");
+        if (!String.IsNullOrWhiteSpace(Origin)) parameters.Add($"Origin={Origin}");
+        if (LinkType != null) parameters.Add($"LinkType={LinkType.ToString()}");
+        string query = String.Join('&', parameters.ToArray());
+        if (!String.IsNullOrWhiteSpace(query)) query = "?" + query;
+        return query;
+    }
+
+    private void SetQueryParameters() {
+        var query = new Uri(NavigationManager.Uri).Query;
+
+        if (QueryHelpers.ParseQuery(query).TryGetValue("Name", out var name)) Name = name;
+        if (QueryHelpers.ParseQuery(query).TryGetValue("Origin", out var origin)) Origin = origin;
+        if (QueryHelpers.ParseQuery(query).TryGetValue("LinkType", out var linkType)) {
+            bool success = Enum.TryParse<LinkType>(linkType, out var type);
+            if (success) LinkType = type;
+            else LinkType = null;
+        }
+    }
+
+    protected async override Task OnInitializedAsync() {
+        SearchIcon = await Icon.GetIconAsync("Search");
+
+        if (IsSearchPage()) {
+            SetQueryParameters();
+
+            await SearchLinks();
+        } else {
+            Links = await LinkRepository.Get();
+        }
+    }
+}
