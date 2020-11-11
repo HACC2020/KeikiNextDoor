@@ -7,7 +7,7 @@
     "test": "echo \"NPM Functioning...\" && exit 1",
     "init:tailwind": "tailwind init",
     "tailwind:build": "tailwind build styles.css -o ../wwwroot/css/tailwind.css",
-    "build": "npm run build:css",
+    "build": "npm run build:css && npm run build:modules",
     "build:css": "gulp css",
     "build:modules": "npm run build:modules:vanillajs",
     "build:modules:vanillajs": "browserify -d VanillaJSExtension.js > ../wwwroot/js/VanillaJSExtensionMethods.js"
