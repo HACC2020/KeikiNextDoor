@@ -41,11 +41,8 @@ namespace OhanaSupport.Helpers {
         private void LoadHeroicons() {
             const string HEROICONS = "heroicons";
             this.Icons["Menu"] = $"{BASE_URL}/{HEROICONS}/menu.svg";
+            this.Icons["Search"] = $"{BASE_URL}/{HEROICONS}/search.svg";
+            this.Icons["X"] = $"{BASE_URL}/{HEROICONS}/x.svg";
         }
     }
 }
-/*
-@inject Microsoft.AspNetCore.Components.IUriHelper UriHelper
-
-<p> @UriHelper.GetBaseUri()</p>
-*/ 
