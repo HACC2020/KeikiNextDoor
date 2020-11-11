@@ -5,39 +5,47 @@ using System.Text;
 using System.Net.Http;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Configuration;
 
 namespace OhanaSupport.Helpers {
     public class IconHelper {
-        private readonly string ICON_DIRECTORY = "/icons";
+        private readonly string BASE_URL;
         private readonly HttpClient Http;
-        private Dictionary<string, MarkupString> Icons = null;
+        private Dictionary<string, string> Icons = null;
 
 
-        public IconHelper(IHttpClientFactory httpClientFactory) {
+        public IconHelper(IConfiguration Configuration, IHttpClientFactory httpClientFactory) {
             this.Http = httpClientFactory.CreateClient();
-            Icons = new Dictionary<string, MarkupString>();
+            var base_addr = Configuration["BaseAddress"];
+            BASE_URL = $"{base_addr}/icons";
+            Icons = new Dictionary<string, string>();
+            LoadIcons();
         }
 
-        //Method to get SVG Icon
-        public MarkupString? GetIcon(string name) {
-            //does it exist: no return null
-            if (!(this.Icons.ContainsKey(name))) return null;
-            return this.Icons[name];
+        public async Task<MarkupString> GetIconAsync(string name) {
+            string icon;
+            this.Icons.TryGetValue(name, out icon);
+            return (icon == null) ? new MarkupString() : new MarkupString(await this.Http.GetStringAsync(icon));
         }
 
-
-        //Method to get SVG and insert class
-        public MarkupString? GetIcon(string name, string css) {
-            if (!(this.Icons.ContainsKey(name))) return null;
-            MarkupString icon = this.Icons[name];
-            string svg = icon.Value;
-            return new MarkupString(svg.Insert(5, $"class=\"{css}\" "));
+        public async Task<MarkupString> GetIconAsync(string name, string css) {
+            string icon;
+            this.Icons.TryGetValue(name, out icon);
+            return (icon == null) ? new MarkupString() : new MarkupString((await this.Http.GetStringAsync(icon)).Insert(5, $"class=\"{css}\" "));
         }
 
-        public async Task LoadIcons() {
-            //
+        private void LoadIcons() {
+            LoadHeroicons();
         }
 
-        //Load certain icons based on directory.
+        private void LoadHeroicons() {
+            const string HEROICONS = "heroicons";
+            this.Icons["Menu"] = $"{BASE_URL}/{HEROICONS}/menu.svg";
+        }
     }
 }
+/*
+@inject Microsoft.AspNetCore.Components.IUriHelper UriHelper
+
+<p> @UriHelper.GetBaseUri()</p>
+*/ 
