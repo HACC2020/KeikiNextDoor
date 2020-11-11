@@ -37,7 +37,7 @@ namespace OhanaSupport {
             services.AddScoped<ILinkRepository, LinkRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             
-            services.AddSingleton<IconHelper>();
+            services.AddScoped<IconHelper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
